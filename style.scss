@@ -1,0 +1,51 @@
+$width: 100px;
+$day-block-font: 30px Arial, sans-serif;
+@mixin day-block {
+  width: $width;
+  background-color: #eee;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  font: $day-block-font;
+  cursor: pointer;
+  text-align: center;
+  line-height: $width;
+  transition: transform 0.5s;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, $width);
+  grid-gap: 1px;
+  max-width: 700px;
+  margin: 100px auto;
+}
+
+@for $i from 1 to 32 {
+  div:nth-child(#{$i}) {
+    @include day-block;
+  }
+
+  div:nth-child(#{$i})::after {
+    content: "#{$i}";
+  }
+}
+
+$days: "mon", "tue", "wed", "thu", "fri", "sat", "sun";
+$j: 1;
+@each $day in $days {
+  .calendar-#{$day} :nth-child(1) {
+    grid-column-start: $j;
+  }
+  $j: $j + 1;
+}
+
+@for $i from 28 to 31 {
+  .calendar-#{$i} :nth-child(#{$i}) ~ div {
+    display: none;
+  }
+}
+
+.calendar > div:hover {
+  transform: translate(0, -20px);
+  background-color: pink;
+}
